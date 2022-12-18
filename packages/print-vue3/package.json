@@ -1,0 +1,15 @@
+{
+  "name": "@browser-print/vue3",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "Kennys Wang <kennys_wang@163.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "es/index.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": "node ./__tests__/print-vue3.test.js"
+  }
+}

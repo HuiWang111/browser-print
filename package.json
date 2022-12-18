@@ -1,0 +1,25 @@
+{
+  "name": "@browser-print/monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.46.1",
+    "@typescript-eslint/parser": "^5.46.1",
+    "eslint": "^8.30.0",
+    "eslint-define-config": "^1.12.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-regexp": "^1.11.0",
+    "husky": "^8.0.2",
+    "lerna": "^6.1.0"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "lint": "eslint ./packages"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "@browser-print/core",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "main": "cjs/index.js",
+  "module": "es/index.js",
+  "types": "es/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile:esm": "tsc",
+    "compile:cjs": "tsc --target ES5 --module CommonJS --outDir cjs",
+    "compile": "rm -rf es && rm -rf cjs && npm run compile:esm && npm run compile:cjs",
+    "build": "rm -rf dist && npm run compile && node ./scripts/build.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "rollup": "^3.7.5",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.34.1"
+  }
+}
