@@ -6,9 +6,9 @@ build()
 
 async function build() {
   const output = {
-    file: 'dist/print.js',
-    format: 'umd',
-    name: 'print'
+    file: 'dist/printer.js',
+    format: 'iife',
+    name: 'Printer'
   }
   const baseOptions = {
     input: './src/index.ts',
@@ -34,7 +34,7 @@ async function build() {
     })
 
     bundle.write(output)
-    minifyBundle.write({ ...output, file: 'dist/print.min.js' })
+    minifyBundle.write({ ...output, file: 'dist/printer.min.js' })
   } catch(e) {
     console.error(e)
   }

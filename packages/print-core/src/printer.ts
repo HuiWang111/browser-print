@@ -2,12 +2,12 @@ import type { PrinterOptions } from './types'
 import { HTMLStandards } from './constants'
 import { syntheticEvent } from './synthetic-event'
 import { removeNode } from './utils'
+import { CanvasImageClassName, CanvasImageSelector } from './constants'
 
 const each = Array.prototype.forEach
 
 export class Printer {
   private options: PrinterOptions
-  private canvasImageClassName = 'canvas-image'
 
   constructor(options: PrinterOptions) {
     if (!options.id) {
@@ -81,6 +81,11 @@ export class Printer {
     })
     each.call(document.styleSheets, (sheet: CSSStyleSheet) => {
       try {
+        // 这里只处理内联样式，外部链接样式通过上面的 link 标签处理
+        if (sheet.href) {
+          return
+        }
+      
         if (sheet.cssRules || sheet.rules) {
           const rules = sheet.cssRules || sheet.rules
   
@@ -123,14 +128,14 @@ export class Printer {
     canvases.forEach(canvas => {
       const dataUrl = canvas.toDataURL('image/png')
       const image = new Image()
-      image.className = this.canvasImageClassName
+      image.className = CanvasImageClassName
       image.src = dataUrl
       image.style.display = 'none'
       canvas.parentNode?.appendChild(image)
     })
 
     const el = target.cloneNode(true) as HTMLElement
-    const canvasLikes = el.querySelectorAll(`.${this.canvasImageClassName}, canvas`)
+    const canvasLikes = el.querySelectorAll(`${CanvasImageSelector}, canvas`)
 
     canvasLikes.forEach((element) => {
       if (element.tagName.toLowerCase() === 'canvas') {
@@ -138,6 +143,37 @@ export class Printer {
       } else {
         (element as HTMLElement).style.display = 'block'
       }
+    })
+
+    const inputs = el.querySelectorAll('input')
+    inputs.forEach(input => {
+      const type = input.getAttribute('type')
+      
+      if (!type) return
+
+      if (['checkbox', 'radio'].includes(type)) {
+        if (input.checked) {
+          input.checked = true
+          input.setAttribute('checked', 'true')
+        } else {
+          input.checked = false
+        }
+      } else {
+        input.setAttribute('value', input.value)
+      }
+    })
+
+    const selects = el.querySelectorAll('select')
+    const originalSelects = target.querySelectorAll('select')
+    selects.forEach((select, i) => {
+      const { selectedIndex } = originalSelects[i].options
+      select.options[selectedIndex].setAttribute('selected', 'true')
+    })
+
+    const textareas = el.querySelectorAll('textarea')
+    textareas.forEach(textarea => {
+      textarea.setAttribute('html', textarea.value)
+      textarea.innerHTML = textarea.value
     })
 
     return el
@@ -153,19 +189,15 @@ export class Printer {
     win.print()
     this.options.onOpen?.()
     removeNode(iframe)
-    // this.clear(iframe)
+    this.clear(iframe)
   }
 
-  // private clear(iframe: HTMLIFrameElement) {
-  //   const doc = iframe.contentDocument
+  private clear(iframe: HTMLIFrameElement) {
+    const canvasImages = document.querySelectorAll(CanvasImageSelector)
+    canvasImages.forEach(el => {
+      el.parentNode?.removeChild(el)
+    })
 
-  //   if (!doc) return
-
-  //   const canvasImages = doc.querySelectorAll(`.${this.canvasImageClassName}`)
-  //   canvasImages.forEach(el => {
-  //     el.parentNode?.removeChild(el)
-  //   })
-
-  //   removeNode(iframe)
-  // }
+    removeNode(iframe)
+  }
 }

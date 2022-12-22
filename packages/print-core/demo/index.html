@@ -6,11 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Print Demo</title>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@2.45.0/dist/full.css" rel="stylesheet" type="text/css" />
-  <link rel="stylesheet" type="text/css" href="./main.css">
   <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
   <style>
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      padding: 20px;
+    }
+
+    .modal-box {
+      max-width: calc(100vw - 40px);
+    }
+
     #print-content {
       margin-top: 20px;
+    }
+
+    .row {
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -19,9 +34,34 @@
 
   <div id="print-content">
     <div id="main" style="width: 600px;height:400px;"></div>
+    <div class="row">
+      <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
+    </div>
+    <div class="row">
+      <textarea class="textarea textarea-bordered" placeholder="Bio"></textarea>
+    </div>
+    <div class="row">
+      <select class="select select-bordered w-full max-w-xs">
+        <option disabled>Who shot first?</option>
+        <option>Han Solo</option>
+        <option>Greedo</option>
+      </select>
+    </div>
+    <div class="row">
+      <div class="form-control">
+        <label class="label cursor-pointer">
+          <span class="label-text">Remember me</span> 
+          <input type="checkbox" />
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <input type="radio" name="radio-1" />
+      <input type="radio" name="radio-1" />
+    </div>
   </div>
 
-  <script src="../dist/print.js"></script>
+  <script src="../dist/printer.js"></script>
   <script type="text/javascript">
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('main'));
@@ -53,11 +93,9 @@
 
     const printBtn = document.querySelector('.print-btn')
     printBtn.addEventListener('click', () => {
-      const printer = new print.Printer({
+      new Printer({
         id: 'print-content'
       })
-      // console.log(printer)
-      // printer.print()
     })
   </script>
 </body>
