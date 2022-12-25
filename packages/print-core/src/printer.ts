@@ -1,8 +1,7 @@
 import type { PrinterOptions } from './types'
-import { HTMLStandards } from './constants'
 import { syntheticEvent } from './synthetic-event'
 import { removeNode } from './utils'
-import { CanvasImageClassName, CanvasImageSelector } from './constants'
+import { CanvasImageClassName, CanvasImageSelector, HTMLStandards } from './constants'
 
 const each = Array.prototype.forEach
 
@@ -125,7 +124,7 @@ export class Printer {
   private preprocess(target: HTMLElement) {
     const canvases = target.querySelectorAll('canvas')
 
-    canvases.forEach(canvas => {
+    each.call(canvases, canvas => {
       const dataUrl = canvas.toDataURL('image/png')
       const image = new Image()
       image.className = CanvasImageClassName
@@ -137,7 +136,7 @@ export class Printer {
     const el = target.cloneNode(true) as HTMLElement
     const canvasLikes = el.querySelectorAll(`${CanvasImageSelector}, canvas`)
 
-    canvasLikes.forEach((element) => {
+    each.call(canvasLikes, (element) => {
       if (element.tagName.toLowerCase() === 'canvas') {
         element.parentNode?.removeChild(element)
       } else {
@@ -146,12 +145,12 @@ export class Printer {
     })
 
     const inputs = el.querySelectorAll('input')
-    inputs.forEach(input => {
+    each.call(inputs, input => {
       const type = input.getAttribute('type')
       
       if (!type) return
 
-      if (['checkbox', 'radio'].includes(type)) {
+      if (['checkbox', 'radio'].indexOf(type) > -1) {
         if (input.checked) {
           input.checked = true
           input.setAttribute('checked', 'true')
@@ -165,13 +164,13 @@ export class Printer {
 
     const selects = el.querySelectorAll('select')
     const originalSelects = target.querySelectorAll('select')
-    selects.forEach((select, i) => {
+    each.call(selects, (select, i) => {
       const { selectedIndex } = originalSelects[i].options
       select.options[selectedIndex].setAttribute('selected', 'true')
     })
 
     const textareas = el.querySelectorAll('textarea')
-    textareas.forEach(textarea => {
+    each.call(textareas, textarea => {
       textarea.setAttribute('html', textarea.value)
       textarea.innerHTML = textarea.value
     })
@@ -194,7 +193,7 @@ export class Printer {
 
   private clear(iframe: HTMLIFrameElement) {
     const canvasImages = document.querySelectorAll(CanvasImageSelector)
-    canvasImages.forEach(el => {
+    each.call(canvasImages, el => {
       el.parentNode?.removeChild(el)
     })
 
