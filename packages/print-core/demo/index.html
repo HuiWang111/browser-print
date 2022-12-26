@@ -30,7 +30,9 @@
   </style>
 </head>
 <body>
-  <button class="btn btn-primary print-btn">print</button>
+  <button class="btn btn-primary print-btn">局部打印</button>
+  <button class="btn btn-primary url-print-btn">url打印</button>
+  <button class="btn btn-primary async-url-print-btn">asyncUrl打印</button>
 
   <div id="print-content">
     <div id="main" style="width: 600px;height:400px;"></div>
@@ -65,7 +67,7 @@
     </div>
   </div>
 
-  <script src="../dist/printer.js"></script>
+  <script src="./printer.js"></script>
   <script type="text/javascript">
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('main'));
@@ -91,6 +93,16 @@
         }
       ]
     };
+    
+    var handleBeforePrint = function() {
+      console.log('before print')
+    }
+    var handlePrint = function() {
+      console.log('print')
+    }
+    var handleAfterPrint = function() {
+      console.log('after print')
+    }
 
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);
@@ -98,7 +110,38 @@
     var printBtn = document.querySelector('.print-btn')
     printBtn.addEventListener('click', function() {
       new Printer({
-        id: 'print-content'
+        id: 'print-content',
+        iframeTitle: 'print',
+        extraHead: [
+          '<meta http-equiv="Access-Control-Allow-Origin" content="*">'
+        ],
+        onBeforePrint: handleBeforePrint,
+        onPrint: handlePrint,
+        onAfterPrint: handleAfterPrint,
+      })
+    })
+
+    var urlPrintBtn = document.querySelector('.url-print-btn')
+    urlPrintBtn.addEventListener('click', function() {
+      new Printer({
+        url: 'http://localhost:8897/vite-react.html',
+        onBeforePrint: handleBeforePrint,
+        onPrint: handlePrint,
+        onAfterPrint: handleAfterPrint,
+      })
+    })
+
+    var asyncUrlPrintBtn = document.querySelector('.async-url-print-btn')
+    asyncUrlPrintBtn.addEventListener('click', function() {
+      new Printer({
+        getUrlAsync: function(resolve) {
+          setTimeout(function() {
+            resolve('http://localhost:8897/vite-react.html')
+          }, 2000)
+        },
+        onBeforePrint: handleBeforePrint,
+        onPrint: handlePrint,
+        onAfterPrint: handleAfterPrint,
       })
     })
   </script>

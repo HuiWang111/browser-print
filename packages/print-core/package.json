@@ -11,7 +11,8 @@
     "compile:cjs": "tsc --target ES5 --module CommonJS --outDir cjs",
     "compile": "rm -rf es && rm -rf cjs && npm run compile:esm && npm run compile:cjs",
     "bundle": "rm -rf dist && node ./scripts/build.mjs",
-    "build": "npm run compile && npm run bundle"
+    "build": "npm run compile && npm run bundle",
+    "copy": "cp dist/printer.js demo/printer.js"
   },
   "keywords": [],
   "author": "",

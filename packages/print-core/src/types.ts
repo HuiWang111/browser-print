@@ -1,11 +1,13 @@
-import { HTMLStandards } from './constants'
+import type { HTMLStandards } from './constants'
 
 export interface PrinterOptions {
-  id: string;
+  id?: string;
   standard?: HTMLStandards;
   extraHead?: string[];
   extraCss?: string[];
   iframeTitle?: string;
-  onBeforeOpen?: () => void;
-  onOpen?: () => void;
+  url?: string;
+  onBeforePrint?: () => void;
+  onAfterPrint?: () => void;
+  getUrlAsync?: (resolve: (url: string) => void) => void;
 }

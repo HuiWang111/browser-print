@@ -9,10 +9,6 @@ export class Printer {
   private options: PrinterOptions
 
   constructor(options: PrinterOptions) {
-    if (!options.id) {
-      throw new Error(`[browswer-print] Make sure options.id is provided`)
-    }
-
     const defaultOptions: Omit<PrinterOptions, 'id'> = {
       standard: HTMLStandards.HTML5,
     }
@@ -23,10 +19,33 @@ export class Printer {
 
   private init() {
     const timeStamp = new Date().getTime()
+    
+    if (this.options.id) {
+      this.printById(timeStamp, this.options.id)
+    } else {
+      if (this.options.url) {
+        this.printByUrl(timeStamp, this.options.url)
+      } else if (this.options.getUrlAsync) {
+        this.options.getUrlAsync((url: string) => {
+          if (!url) {
+            throw new Error(`[browswer-print] Make sure provide one of options.id/url/getUrlAsync`)
+          }
+          this.printByUrl(timeStamp, url)
+        })
+      }
+    }
+  }
+
+  private printByUrl(timeStamp: number, url: string) {
+    const frameId = `print-iframe-${timeStamp}`
+    this.createIframe(frameId, url)
+  }
+
+  private printById(timeStamp: number, id: string) {
     const frameId = `print-iframe-${timeStamp}`
 
     const iframe = this.createIframe(frameId, String(timeStamp))
-    this.writeIframe(iframe.contentDocument)
+    this.writeIframe(iframe.contentDocument, id)
   }
 
   private createIframe(frameId: string, url: string) {
@@ -51,11 +70,11 @@ export class Printer {
     return iframe
   }
 
-  private writeIframe(doc: Document | null) {
+  private writeIframe(doc: Document | null, id: string) {
     if (!doc) return
 
     doc.open()
-    doc.write(`${this.generateDocType()}<html>${this.generateHead()}${this.generateBody()}</html>`)
+    doc.write(`${this.generateDocType()}<html>${this.generateHead()}${this.generateBody(id)}</html>`)
     doc.close()
   }
 
@@ -109,11 +128,11 @@ export class Printer {
     return `<head><title>${title}</title>${extraHead.join('')}${links.join('')}<style type="text/css">${styles.join('')}</style></head>`
   }
 
-  private generateBody() {
-    const target = document.getElementById(this.options.id.replace(/^#/, ''))
+  private generateBody(id: string) {
+    const target = document.getElementById(id.replace(/^#/, ''))
 
     if (!target) {
-      console.warn(`[browser-print] cannot found element '${this.options.id}'`)
+      console.warn(`[browser-print] cannot found element '${id}'`)
       return '<body></body>'
     }
 
@@ -182,13 +201,17 @@ export class Printer {
     const win = iframe.contentWindow
 
     if (!win) return null
+    
+    syntheticEvent.addListener(win, 'beforeprint', () => {
+      this.options.onBeforePrint?.()
+    })
+    syntheticEvent.addListener(win, 'afterprint', () => {
+      this.options.onAfterPrint?.()
+      this.clear(iframe)
+    })
 
     win.focus()
-    this.options.onBeforeOpen?.()
     win.print()
-    this.options.onOpen?.()
-    removeNode(iframe)
-    this.clear(iframe)
   }
 
   private clear(iframe: HTMLIFrameElement) {

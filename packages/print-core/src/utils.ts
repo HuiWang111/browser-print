@@ -1,12 +1,13 @@
-export function isIE() {
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+export function isIE(): boolean {
   return 'ActiveXObject' in window
 }
 
-export function isIE11() {
+export function isIE11(): boolean {
   return (/Trident\/7\./).test(navigator.userAgent)
 }
 
-export function removeNode(node: Element | null) {
+export function removeNode(node: Element | null): void {
   if (!node) return
 
   if (isIE()) {
@@ -17,7 +18,7 @@ export function removeNode(node: Element | null) {
   }
 }
 
-export function getComputedStyle(el: HTMLElement | null, prop: string) {
+export function getComputedStyle(el: HTMLElement | null, prop: string): any {
   if (!el) return
 
   // @ts-ignore
