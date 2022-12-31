@@ -7,7 +7,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-var Printer = function () {
+var Printer = function (exports) {
   'use strict';
 
   function noop() {}
@@ -64,6 +64,7 @@ var Printer = function () {
   var Printer = /*#__PURE__*/function () {
     function Printer(options) {
       _classCallCheck(this, Printer);
+      this.toRemoves = [];
       var defaultOptions = {
         standard: HTMLStandards.HTML5
       };
@@ -118,8 +119,8 @@ var Printer = function () {
         iframe.setAttribute('src', url);
         var remove = syntheticEvent.addListener(iframe, 'load', function () {
           _this2.print(iframe);
-          remove();
         });
+        this.toRemoves.push(remove);
         document.body.appendChild(iframe);
         return iframe;
       }
@@ -244,15 +245,15 @@ var Printer = function () {
         var _this3 = this;
         var win = iframe.contentWindow;
         if (!win) return null;
-        syntheticEvent.addListener(win, 'beforeprint', function () {
+        this.toRemoves.push(syntheticEvent.addListener(win, 'beforeprint', function () {
           var _this3$options$onBefo, _this3$options;
           (_this3$options$onBefo = (_this3$options = _this3.options).onBeforePrint) === null || _this3$options$onBefo === void 0 ? void 0 : _this3$options$onBefo.call(_this3$options);
-        });
-        syntheticEvent.addListener(win, 'afterprint', function () {
+        }));
+        this.toRemoves.push(syntheticEvent.addListener(win, 'afterprint', function () {
           var _this3$options$onAfte, _this3$options2;
           (_this3$options$onAfte = (_this3$options2 = _this3.options).onAfterPrint) === null || _this3$options$onAfte === void 0 ? void 0 : _this3$options$onAfte.call(_this3$options2);
           _this3.clear(iframe);
-        });
+        }));
         win.focus();
         win.print();
       }
@@ -264,10 +265,18 @@ var Printer = function () {
           var _el$parentNode;
           (_el$parentNode = el.parentNode) === null || _el$parentNode === void 0 ? void 0 : _el$parentNode.removeChild(el);
         });
+        this.toRemoves.forEach(function (remove) {
+          remove();
+        });
         removeNode(iframe);
       }
     }]);
     return Printer;
   }();
-  return Printer;
-}();
+  exports.default = Printer;
+  exports.syntheticEvent = syntheticEvent;
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  return exports;
+}({});

@@ -10,4 +10,5 @@ export interface PrinterOptions {
   onBeforePrint?: () => void;
   onAfterPrint?: () => void;
   getUrlAsync?: (resolve: (url: string) => void) => void;
+  customRender?: () => void;
 }

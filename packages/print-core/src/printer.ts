@@ -7,6 +7,7 @@ const each = Array.prototype.forEach
 
 export class Printer {
   private options: PrinterOptions
+  private toRemoves: (() => void)[] = []
 
   constructor(options: PrinterOptions) {
     const defaultOptions: Omit<PrinterOptions, 'id'> = {
@@ -62,8 +63,8 @@ export class Printer {
 
     const remove = syntheticEvent.addListener(iframe, 'load', () => {
       this.print(iframe)
-      remove()
     })
+    this.toRemoves.push(remove)
 
     document.body.appendChild(iframe)
 
@@ -202,13 +203,17 @@ export class Printer {
 
     if (!win) return null
     
-    syntheticEvent.addListener(win, 'beforeprint', () => {
-      this.options.onBeforePrint?.()
-    })
-    syntheticEvent.addListener(win, 'afterprint', () => {
-      this.options.onAfterPrint?.()
-      this.clear(iframe)
-    })
+    this.toRemoves.push(
+      syntheticEvent.addListener(win, 'beforeprint', () => {
+        this.options.onBeforePrint?.()
+      })
+    )
+    this.toRemoves.push(
+      syntheticEvent.addListener(win, 'afterprint', () => {
+        this.options.onAfterPrint?.()
+        this.clear(iframe)
+      })
+    )
 
     win.focus()
     win.print()
@@ -218,6 +223,10 @@ export class Printer {
     const canvasImages = document.querySelectorAll(CanvasImageSelector)
     each.call(canvasImages, el => {
       el.parentNode?.removeChild(el)
+    })
+
+    this.toRemoves.forEach(remove => {
+      remove()
     })
 
     removeNode(iframe)

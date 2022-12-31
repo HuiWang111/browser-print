@@ -15,5 +15,11 @@
   ],
   "scripts": {
     "test": "node ./__tests__/print-react.test.js"
+  },
+  "devDependencies": {
+    "react": "^18.2.0"
+  },
+  "dependencies": {
+    "@browser-print/core": "*"
   }
 }

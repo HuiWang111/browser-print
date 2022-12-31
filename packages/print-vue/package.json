@@ -11,5 +11,11 @@
   ],
   "scripts": {
     "test": "node ./__tests__/print-vue.test.js"
+  },
+  "devDependencies": {
+    "vue": "2.7.10"
+  },
+  "dependencies": {
+    "@browser-print/core": "*"
   }
 }
