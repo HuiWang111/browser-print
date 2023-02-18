@@ -7,4 +7,6 @@ const print = PrintDirective();
   Vue.directive('print', print)
 }
 
-export default print
+export default print as Plugin
+
+export type { PrinterConfig } from './directive'

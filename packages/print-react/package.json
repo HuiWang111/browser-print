@@ -1,6 +1,7 @@
 {
   "name": "@browser-print/react",
-  "version": "1.0.0",
+  "version": "0.0.1",
+  "private": true,
   "description": "> TODO: description",
   "author": "Kennys Wang <kennys_wang@163.com>",
   "homepage": "",

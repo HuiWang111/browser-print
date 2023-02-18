@@ -1,0 +1,16 @@
+{
+  "include": ["src", "shim.d.ts"],
+  "exclude": ["**/*.spec.ts"],
+  "compilerOptions": {
+    "outDir": "es",
+    "target": "ES2020",
+    "module": "ES2020",
+    "moduleResolution": "Node",
+    "strict": true,
+    "declaration": true,
+    "sourceMap": false,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "removeComments": true
+  }
+}

@@ -1,5 +1,5 @@
 node_modules/
 es/
 dist/
-cjs/
+lib/
 yarn-error.log

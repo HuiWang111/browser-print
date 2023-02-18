@@ -4,5 +4,6 @@
   "javascript.inlayHints.parameterTypes.enabled": true,
   "typescript.inlayHints.parameterTypes.enabled": true,
   "javascript.inlayHints.variableTypes.enabled": true,
-  "typescript.inlayHints.variableTypes.enabled": true
+  "typescript.inlayHints.variableTypes.enabled": true,
+  "git.ignoreLimitWarning": true
 }

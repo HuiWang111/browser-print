@@ -13,7 +13,8 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-regexp": "^1.11.0",
     "husky": "^8.0.2",
-    "lerna": "^6.1.0"
+    "lerna": "^6.1.0",
+    "vue-eslint-parser": "^9.1.0"
   },
   "scripts": {
     "prepare": "husky install",

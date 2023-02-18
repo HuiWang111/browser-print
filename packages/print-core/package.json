@@ -1,18 +1,19 @@
 {
   "name": "@browser-print/core",
-  "version": "1.0.0",
-  "description": "> TODO: description",
-  "main": "cjs/index.js",
+  "version": "0.0.1",
+  "description": "web print tool",
+  "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile:esm": "tsc",
-    "compile:cjs": "tsc --target ES5 --module CommonJS --outDir cjs",
-    "compile": "rm -rf es && rm -rf cjs && npm run compile:esm && npm run compile:cjs",
+    "compile:cjs": "tsc --target ES5 --module CommonJS --outDir lib",
+    "compile": "rm -rf es && rm -rf lib && npm run compile:esm && npm run compile:cjs",
     "bundle": "rm -rf dist && node ./scripts/build.mjs",
     "build": "npm run compile && npm run bundle",
-    "copy": "cp dist/printer.js demo/printer.js"
+    "copy": "cp dist/printer.js demo/printer.js",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,7 @@
     "@babel/core": "^7.20.7",
     "@babel/preset-env": "^7.20.2",
     "@rollup/plugin-babel": "^6.0.3",
+    "eslint-define-config": "^1.15.0",
     "rollup": "^3.7.5",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.34.1"
