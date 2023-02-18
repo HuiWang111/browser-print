@@ -97,9 +97,6 @@
     var handleBeforePrint = function() {
       console.log('before print')
     }
-    var handlePrint = function() {
-      console.log('print')
-    }
     var handleAfterPrint = function() {
       console.log('after print')
     }
@@ -109,14 +106,13 @@
 
     var printBtn = document.querySelector('.print-btn')
     printBtn.addEventListener('click', function() {
-      new Printer({
+      new Printer.default({
         id: 'print-content',
         iframeTitle: 'print',
         extraHead: [
           '<meta http-equiv="Access-Control-Allow-Origin" content="*">'
         ],
         onBeforePrint: handleBeforePrint,
-        onPrint: handlePrint,
         onAfterPrint: handleAfterPrint,
       })
     })
@@ -124,24 +120,22 @@
     // url打印需要遵循同源策略
     var urlPrintBtn = document.querySelector('.url-print-btn')
     urlPrintBtn.addEventListener('click', function() {
-      new Printer({
+      new Printer.default({
         url: 'http://localhost:8897/vite-react.html',
         onBeforePrint: handleBeforePrint,
-        onPrint: handlePrint,
         onAfterPrint: handleAfterPrint,
       })
     })
 
     var asyncUrlPrintBtn = document.querySelector('.async-url-print-btn')
     asyncUrlPrintBtn.addEventListener('click', function() {
-      new Printer({
+      new Printer.default({
         getUrlAsync: function(resolve) {
           setTimeout(function() {
             resolve('http://localhost:8897/vite-react.html')
           }, 2000)
         },
         onBeforePrint: handleBeforePrint,
-        onPrint: handlePrint,
         onAfterPrint: handleAfterPrint,
       })
     })
