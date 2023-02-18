@@ -1,6 +1,6 @@
 {
   "name": "@browser-print/vue",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Vue2 print tool",
   "author": "Kennys Wang <kennys_wang@163.com>",
   "homepage": "",
@@ -32,6 +32,6 @@
     "vue": "2.7.10"
   },
   "dependencies": {
-    "@browser-print/core": "*"
+    "@browser-print/core": "^0.1.0"
   }
 }
