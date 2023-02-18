@@ -18,7 +18,8 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "lint": "eslint ./packages"
+    "lint": "eslint ./packages",
+    "pub": "lerna publish --no-private"
   },
   "workspaces": [
     "packages/*"
