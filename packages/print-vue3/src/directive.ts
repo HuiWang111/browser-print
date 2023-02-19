@@ -1,6 +1,7 @@
 import type { Directive } from 'vue'
 import type { PrinterOptions } from '@browser-print/core'
-import Printer, { syntheticEvent } from '@browser-print/core'
+import Printer from '@browser-print/core'
+import { syntheticEvent } from '@browser-print/core/es/synthetic-event'
 
 export interface PrinterConfig extends PrinterOptions {
   shouldToPrint?: () => boolean;

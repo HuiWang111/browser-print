@@ -19,7 +19,8 @@
   "scripts": {
     "prepare": "husky install",
     "lint": "eslint ./packages",
-    "pub": "lerna publish --no-private"
+    "pub": "lerna publish --no-private",
+    "build": "node scripts/build.js"
   },
   "workspaces": [
     "packages/*"

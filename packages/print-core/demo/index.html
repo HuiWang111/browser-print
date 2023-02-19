@@ -106,7 +106,7 @@
 
     var printBtn = document.querySelector('.print-btn')
     printBtn.addEventListener('click', function() {
-      new Printer.default({
+      new Printer({
         id: 'print-content',
         iframeTitle: 'print',
         extraHead: [
@@ -120,7 +120,7 @@
     // url打印需要遵循同源策略
     var urlPrintBtn = document.querySelector('.url-print-btn')
     urlPrintBtn.addEventListener('click', function() {
-      new Printer.default({
+      new Printer({
         url: 'http://localhost:8897/vite-react.html',
         onBeforePrint: handleBeforePrint,
         onAfterPrint: handleAfterPrint,
@@ -129,7 +129,7 @@
 
     var asyncUrlPrintBtn = document.querySelector('.async-url-print-btn')
     asyncUrlPrintBtn.addEventListener('click', function() {
-      new Printer.default({
+      new Printer({
         getUrlAsync: function(resolve) {
           setTimeout(function() {
             resolve('http://localhost:8897/vite-react.html')

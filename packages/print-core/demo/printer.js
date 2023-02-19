@@ -7,7 +7,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-var Printer = function (exports) {
+var Printer = function () {
   'use strict';
 
   function noop() {}
@@ -273,10 +273,5 @@ var Printer = function (exports) {
     }]);
     return Printer;
   }();
-  exports.default = Printer;
-  exports.syntheticEvent = syntheticEvent;
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  return exports;
-}({});
+  return Printer;
+}();
